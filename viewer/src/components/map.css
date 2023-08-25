@@ -1,0 +1,25 @@
+.map {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.maplibregl-popup-content {
+  font: 12px 'Hiragino Kaku Gothic ProN', 'YuGothic', 'Meiryo', 'sans-serif';
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+  color: black;
+  text-align: left;
+}
+
+.maplibregl-popup-content ul {
+  margin: 1em 0;
+  padding: 0 0 0.5em 1em;
+}
+
+.maplibregl-popup-content .value {
+  font-weight: bold;
+}
+
+.maplibregl-popup-content li {
+  list-style-type: none;
+}
