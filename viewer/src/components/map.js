@@ -31,7 +31,7 @@ export default function Map(props) {
 
       // PMTile
       {
-        const URL = "https://storage.googleapis.com/2023-08-25_map-tile/pmtiles.pmtiles";
+        const URL = 'https://storage.googleapis.com/2023-08-25_map-tile/pmtiles.pmtiles';
         protocol.add(new pmtiles.PMTiles(URL));
 
         map.addLayer({
@@ -45,6 +45,19 @@ export default function Map(props) {
           maxzoom: 4,
         });
       }
+
+      // ラスタータイル
+      map.addLayer({
+        id: 'raster-tile',
+        type: 'raster',
+        source: {
+          type: 'raster',
+          tileSize: 256,
+          tiles: ['https://storage.googleapis.com/2023-08-25_map-tile/raster-tile/{z}/{x}/{y}.png'],
+        },
+        minzoom: 0,
+        maxzoom: 4,
+      });
 
       // Cloud Optimized GeoTiff
       map.addLayer({
