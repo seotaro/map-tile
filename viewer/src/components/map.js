@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as pmtiles from 'pmtiles';
+import { Pool, fromUrl } from 'geotiff';
+import { encode } from 'fast-png';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './map.css';
@@ -44,15 +46,13 @@ export default function Map(props) {
         });
       }
 
-      // ラスタータイル
+      // Cloud Optimized GeoTiff
       map.addLayer({
-        id: "raster-tile",
+        id: 'cogLayer',
         type: 'raster',
-        source: {
-          type: "raster",
-          tileSize: 256,
-          tiles: ["https://storage.googleapis.com/2023-08-25_map-tile/raster-tile/{z}/{x}/{y}.png"],
-        },
+        source: await generateCogSource(
+          'https://storage.googleapis.com/2023-08-25_map-tile/cloud-optimized-geotiff.tiff'
+        ),
         minzoom: 0,
         maxzoom: 4,
       });
@@ -68,6 +68,53 @@ export default function Map(props) {
   return (
     <div ref={mapContainer} className="map" />
   );
-
 }
 
+// タイル座標系からメルカトル座標系の bbox を返す。
+const tile2mercatorBox = (x, y, z) => {
+  const GEO_R = 6378137;
+  const orgX = -1 * ((2 * GEO_R * Math.PI) / 2);
+  const orgY = (2 * GEO_R * Math.PI) / 2;
+  const unit = (2 * GEO_R * Math.PI) / Math.pow(2, z);
+  const minx = orgX + x * unit;
+  const maxx = orgX + (x + 1) * unit;
+  const miny = orgY - (y + 1) * unit;
+  const maxy = orgY - y * unit;
+  return [minx, miny, maxx, maxy];
+};
+
+// Cloud Optimized GeoTIFF ソースを返す
+const generateCogSource = async (url) => {
+  const SIZE = 256; // タイルサイズ
+
+  const tiff = await fromUrl(url);
+  const pool = new Pool();
+
+  maplibregl.addProtocol('cog', (params, callback) => {
+    const segments = params.url.split('/');
+    const [z, x, y] = segments.slice(segments.length - 3).map(x => Number(x));
+    const bbox = tile2mercatorBox(x, y, z);
+
+    tiff.readRasters({
+      bbox,
+      samples: [0, 1, 2, 3], // RGBA
+      width: SIZE, height: SIZE,
+      interleave: true,
+      pool,
+    })
+      .then((data) => {
+        callback(null, encode(new ImageData(new Uint8ClampedArray(data), SIZE, SIZE,)), null, null);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+
+    return { cancel: () => { } };
+  });
+
+  return {
+    type: 'raster',
+    tiles: [`cog://${url.split('://')[1]}/{z}/{x}/{y}`],
+    tileSize: SIZE,
+  }
+};
