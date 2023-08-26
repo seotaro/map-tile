@@ -3,12 +3,12 @@ SRC := HYP_50M_SR_W/HYP_50M_SR_W.tif
 
 create-xyz-tile:
 	mkdir -p output
-	gdal2tiles.py --zoom=1-4 --xyz --webviewer=none $(SRC) output/raster-tile
+	gdal2tiles.py --zoom=0-4 --xyz --webviewer=none $(SRC) output/raster-tile
 
 create-raster-pmtiles:
 	mkdir -p output
 	rio mbtiles $(SRC) output/temp.mbtiles \
-		--format PNG --zoom-levels 1..4 --tile-size 256 --resampling bilinear
+		--format PNG --zoom-levels 0..4 --tile-size 256 --resampling bilinear
 	./pmtiles convert output/temp.mbtiles output/pmtiles.pmtiles
 	rm output/temp.mbtiles
 

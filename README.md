@@ -1,30 +1,22 @@
-# タイル
+# マップタイル
 
-Cloud Optimized GeoTiff（以下、COG）
+下記マップタイルの生成とレンダリングのメモ。
 
-対応状況
+- XYZ Tile
+- PMTiles（ラスター）
+- Cloud Optimized GeoTiff（以下、COG）
 
-|         |    MapLibre GL JS（v3.3.0）    | Mapbox GL JS（v2.14.1） | deck.gl |
-| ------- | ------------------------------ | ----------------------- | ------- |
-| PMTiles | pmtiles プロトコル             | TD                      | TD      |
-| COG     | カスタムプロトコルの実装が必要 | TD                      | TD      |
+[ライブデモ](https://seotaro.github.io/map-tile/)
 
-## GeoTiff -> Raster Tile
+MapLibre GL JS（v3.3.0）を使ったレンダリングデモ。
+
+## GeoTiff -> XYZ Tile
 
 ```bash
 gdal2tiles.py --zoom=1-5 --xyz src.tiff dest
 ```
 
-## GeoTiff -> COG
-
-```bash
-gdal_translate src.tiff -projwin -180.0000000 85.0 180.0000000 -85.0 \
-  -of COG dest.tiff \
-  -co TILING_SCHEME=GoogleMapsCompatible \
-  -co COMPRESS=DEFLATE
-```
-
-## GeoTiff -> (MBTiles) -> PMTiles
+## GeoTiff -> PMTiles（ラスター）
 
 use [rio-mbtiles](https://github.com/mapbox/rio-mbtiless), [pmtiles](https://github.com/protomaps/go-pmtiles/releases)
 
@@ -35,3 +27,12 @@ rio mbtiles src.tiff temp.mbtiles \
 ```
 
 [PMTiles Viewer](https://protomaps.github.io/PMTiles/)
+
+## GeoTiff -> COG
+
+```bash
+gdal_translate src.tiff -projwin -180.0000000 85.0 180.0000000 -85.0 \
+  -of COG dest.tiff \
+  -co TILING_SCHEME=GoogleMapsCompatible \
+  -co COMPRESS=DEFLATE
+```
