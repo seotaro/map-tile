@@ -31,13 +31,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.4.0
+          cache: "yarn"
+          cache-dependency-path: ./viewer/yarn.lock
+      - name: Install dependency
+        run: yarn
+        working-directory: ./viewer
+      - name: Build react app
+        run: GENERATE_SOURCEMAP=false REACT_APP_XYZ_TILE_URL=https://storage.googleapis.com/2023-08-25_map-tile/raster-tile/{z}/{x}/{y}.png REACT_APP_COG_URL=https://storage.googleapis.com/2023-08-25_map-tile/cloud-optimized-geotiff.tiff REACT_APP_PMTILE_URL=https://storage.googleapis.com/2023-08-25_map-tile/pmtiles.pmtiles REACT_APP_ROUTE_BASENAME='map-tile' yarn react-scripts build
+        working-directory: ./viewer
+        env:
+          CI: false
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          # Upload entire repository
-          path: '.'
+          path: "./viewer/build"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2

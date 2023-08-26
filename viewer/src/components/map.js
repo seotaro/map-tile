@@ -9,13 +9,16 @@ import './map.css';
 const protocol = new pmtiles.Protocol();
 maplibregl.addProtocol('pmtiles', protocol.tile);
 
+const REACT_APP_XYZ_TILE_URL = process.env.REACT_APP_XYZ_TILE_URL;
+const REACT_APP_COG_URL = process.env.REACT_APP_COG_URL;
+const REACT_APP_PMTILE_URL = process.env.REACT_APP_PMTILE_URL;
+
 export default function Map(props) {
   const {
     isShowPmtilesLayer,
     isShowXyzTileLayer,
     isShowCogLayer,
   } = props;
-
 
   const mapContainer = useRef(null);
   const [lng] = useState(139.8);
@@ -53,15 +56,14 @@ export default function Map(props) {
 
       // PMTile
       {
-        const URL = 'https://storage.googleapis.com/2023-08-25_map-tile/pmtiles.pmtiles';
-        protocol.add(new pmtiles.PMTiles(URL));
+        protocol.add(new pmtiles.PMTiles(REACT_APP_PMTILE_URL));
 
         map.addLayer({
           id: 'pmtiles-layer',
           type: 'raster',
           source: {
             type: 'raster',
-            url: 'pmtiles://' + URL,
+            url: 'pmtiles://' + REACT_APP_PMTILE_URL,
           },
           layout: {
             visibility: 'visible',
@@ -77,7 +79,7 @@ export default function Map(props) {
         source: {
           type: 'raster',
           tileSize: 256,
-          tiles: ['https://storage.googleapis.com/2023-08-25_map-tile/raster-tile/{z}/{x}/{y}.png'],
+          tiles: [REACT_APP_XYZ_TILE_URL],
         },
         layout: {
           visibility: 'none',
@@ -89,9 +91,7 @@ export default function Map(props) {
       map.addLayer({
         id: 'cog-layer',
         type: 'raster',
-        source: await generateCogSource(
-          'https://storage.googleapis.com/2023-08-25_map-tile/cloud-optimized-geotiff.tiff'
-        ),
+        source: await generateCogSource(REACT_APP_COG_URL),
         layout: {
           visibility: 'none',
         },
