@@ -64,10 +64,12 @@ export default function Map(props) {
           source: {
             type: 'raster',
             url: 'pmtiles://' + REACT_APP_PMTILE_URL,
+            attribution: '<a href="https://www.naturalearthdata.com/" target="_blank">Made with Natural Earth.</a>',
           },
           layout: {
             visibility: 'visible',
           },
+          minzoom: 0,
           maxzoom: 4,
         });
       }
@@ -80,10 +82,12 @@ export default function Map(props) {
           type: 'raster',
           tileSize: 256,
           tiles: [REACT_APP_XYZ_TILE_URL],
+          attribution: '<a href="https://www.naturalearthdata.com/" target="_blank">Made with Natural Earth.</a>',
         },
         layout: {
           visibility: 'none',
         },
+        minzoom: 0,
         maxzoom: 4,
       });
 
@@ -95,6 +99,7 @@ export default function Map(props) {
         layout: {
           visibility: 'none',
         },
+        minzoom: 0,
         maxzoom: 4,
       });
 
@@ -157,5 +162,6 @@ const generateCogSource = async (url) => {
     type: 'raster',
     tiles: [`cog://${url.split('://')[1]}/{z}/{x}/{y}`],
     tileSize: SIZE,
+    attribution: '<a href="https://www.naturalearthdata.com/" target="_blank">Made with Natural Earth.</a>',
   }
 };

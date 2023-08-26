@@ -6,6 +6,7 @@ import Drawer from '@mui/material/Drawer';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
+import Typography from '@mui/material/Typography';
 
 // 設定ドロワー
 const SettingsDrawer = (props) => {
@@ -31,8 +32,8 @@ const SettingsDrawer = (props) => {
         <IconButton onClick={handleClose}>
           <ChevronLeftIcon />
         </IconButton>
-
         <Box sx={{ m: 1 }}>
+          <Typography variant='body2'>※ Zoom Level = 0-4</Typography>
           <RadioGroup
             aria-labelledby="blend-radio-buttons-group-label"
             name="blend-radio-buttons-group"
