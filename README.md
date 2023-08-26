@@ -8,7 +8,7 @@
 
 [ライブデモ](https://seotaro.github.io/map-tile/)
 
-MapLibre GL JS（v3.3.0）を使ったレンダリング。
+MapLibre GL JS（v3.3.0）を使ったレンダリングデモ。
 
 ## GeoTiff -> XYZ Tile
 
