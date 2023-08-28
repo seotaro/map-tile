@@ -47,6 +47,7 @@ jobs:
           REACT_APP_COG_URL=https://storage.googleapis.com/2023-08-25_map-tile/cloud-optimized-geotiff.tiff
           REACT_APP_PMTILE_URL=https://storage.googleapis.com/2023-08-25_map-tile/pmtiles.pmtiles
           REACT_APP_VECTOR_XYZ_TILE_URL=https://storage.googleapis.com/2023-08-25_map-tile/vector-tile/{z}/{x}/{y}.pbf
+          REACT_APP_VECTOR_PMTILE_URL=https://storage.googleapis.com/2023-08-25_map-tile/vector-pmtile.pmtiles
           REACT_APP_ROUTE_BASENAME='map-tile'
           yarn react-scripts build
         working-directory: ./viewer
