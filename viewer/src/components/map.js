@@ -13,6 +13,7 @@ const REACT_APP_RASTER_XYZ_TILE_URL = process.env.REACT_APP_RASTER_XYZ_TILE_URL;
 const REACT_APP_COG_URL = process.env.REACT_APP_COG_URL;
 const REACT_APP_PMTILE_URL = process.env.REACT_APP_PMTILE_URL;
 const REACT_APP_VECTOR_XYZ_TILE_URL = process.env.REACT_APP_VECTOR_XYZ_TILE_URL;
+const REACT_APP_VECTOR_PMTILE_URL = process.env.REACT_APP_VECTOR_PMTILE_URL;
 
 export default function Map(props) {
   const {
@@ -20,6 +21,7 @@ export default function Map(props) {
     isShowRasterXyzTileLayer,
     isShowCogLayer,
     isShowVectorXyzTileLayer,
+    isShowVectorPmtilesLayer,
   } = props;
 
   const mapContainer = useRef(null);
@@ -43,7 +45,10 @@ export default function Map(props) {
     map.setLayoutProperty('vector-xyz-tile-layer',
       'visibility', isShowVectorXyzTileLayer ? 'visible' : 'none');
 
-  }, [isShowPmtilesLayer, isShowRasterXyzTileLayer, isShowCogLayer, isShowVectorXyzTileLayer]);
+    map.setLayoutProperty('vector-pmtiles-layer',
+      'visibility', isShowVectorPmtilesLayer ? 'visible' : 'none');
+
+  }, [isShowPmtilesLayer, isShowRasterXyzTileLayer, isShowCogLayer, isShowVectorXyzTileLayer, isShowVectorPmtilesLayer]);
 
 
   useEffect(() => {
@@ -61,7 +66,7 @@ export default function Map(props) {
       map.addControl(new maplibregl.NavigationControl(), 'top-right');
       map.showTileBoundaries = true;
 
-      // PMTile
+      // Raster PMTiles
       {
         protocol.add(new pmtiles.PMTiles(REACT_APP_PMTILE_URL));
 
@@ -81,7 +86,7 @@ export default function Map(props) {
         });
       }
 
-      // ラスター XYZ タイル
+      // Raster XYZ tile
       map.addLayer({
         id: 'raster-xyz-tile-layer',
         type: 'raster',
@@ -110,7 +115,7 @@ export default function Map(props) {
         maxzoom: 4,
       });
 
-      // ベクター XYZ タイル
+      // Vector XYZ Tile
       map.addLayer({
         id: 'vector-xyz-tile-layer',
         source: {
@@ -131,6 +136,30 @@ export default function Map(props) {
         maxzoom: 4,
       });
 
+      // Vector PMTiles
+      {
+        protocol.add(new pmtiles.PMTiles(REACT_APP_VECTOR_PMTILE_URL));
+
+        map.addLayer({
+          id: 'vector-pmtiles-layer',
+          'source-layer': 'admini_boundary',
+          source: {
+            type: 'vector',
+            url: 'pmtiles://' + REACT_APP_VECTOR_PMTILE_URL,
+            attribution: "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html' target='_blank'>「国土数値情報（行政区域データ）」を加工して作成</a>",
+          },
+          type: 'fill',
+          paint: {
+            'fill-opacity': 0.5,
+            'fill-color': 'red',
+          },
+          layout: {
+            visibility: 'none',
+          },
+          minzoom: 0,
+          maxzoom: 4,
+        });
+      }
 
       setMap(map);
     });

@@ -10,6 +10,7 @@ function App() {
   const [isShowRasterXyzTileLayer, showRasterXyzTileLayer] = useState(false);
   const [isShowCogLayer, showCogLayer] = useState(false);
   const [isShowVectorXyzTileLayer, showVectorXyzTileLayer] = useState(false);
+  const [isShowVectorPmtilesLayer, showVectorPmtilesLayer] = useState(false);
 
   const onChangePmtilesLayer = (isShow) => {
     showPmtilesLayer(isShow);
@@ -22,6 +23,9 @@ function App() {
   }
   const onChagneVectorXyzTileLayer = (isShow) => {
     showVectorXyzTileLayer(isShow);
+  }
+  const onChagneVectorPmtilesLayer = (isShow) => {
+    showVectorPmtilesLayer(isShow);
   }
 
   const handleDrawerOpen = () => {
@@ -38,6 +42,7 @@ function App() {
         isShowRasterXyzTileLayer={isShowRasterXyzTileLayer}
         isShowCogLayer={isShowCogLayer}
         isShowVectorXyzTileLayer={isShowVectorXyzTileLayer}
+        isShowVectorPmtilesLayer={isShowVectorPmtilesLayer}
       />
 
       <SettingsDrawer
@@ -47,6 +52,7 @@ function App() {
         onChagneRasterXyzTileLayer={onChagneRasterXyzTileLayer}
         onChagneCogLayer={onChagneCogLayer}
         onChagneVectorXyzTileLayer={onChagneVectorXyzTileLayer}
+        onChagneVectorPmtilesLayer={onChagneVectorPmtilesLayer}
       />
     </Box >
   );

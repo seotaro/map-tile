@@ -27,6 +27,16 @@ create-vector-xyz-tile:
 		--no-tile-compression \
 		N03-20230101_GML/N03-23_230101.geojson
 
+create-vector-pmtile:
+	# tippecanoe input only geojson
+	# pmtiles directory output from tippecanoe is Wrong magic number for PMTiles archive
+	tippecanoe --force --output output/temp.mbtiles \
+		--layer admini_boundary \
+		--minimum-zoom=0 --maximum-zoom=4 \
+		--no-tile-compression \
+		N03-20230101_GML/N03-23_230101.geojson
+	./pmtiles convert output/temp.mbtiles output/vector-pmtile.pmtiles
+
 upload:
 	gsutil -m -h "Cache-Control:public, max-age=15, no-store" cp -r output/* gs://$(BUCKET)
 

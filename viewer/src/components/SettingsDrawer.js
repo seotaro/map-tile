@@ -15,6 +15,7 @@ const SettingsDrawer = (props) => {
     onChagneRasterXyzTileLayer,
     onChagneCogLayer,
     onChagneVectorXyzTileLayer,
+    onChagneVectorPmtilesLayer,
   } = props;
 
   const [type, setType] = useState('pmtilesLayer');
@@ -26,6 +27,7 @@ const SettingsDrawer = (props) => {
     onChagneRasterXyzTileLayer(type === 'rasterXyzTileLayer');
     onChagneCogLayer(type === 'cogLayer');
     onChagneVectorXyzTileLayer(type === 'vectorXyzTileLayer');
+    onChagneVectorPmtilesLayer(type === 'vectorPmtilesLayer');
   };
 
   return (
@@ -46,6 +48,7 @@ const SettingsDrawer = (props) => {
             <FormControlLabel value='rasterXyzTileLayer' control={<Radio />} label='Raster XYZ Tile' />
             <FormControlLabel value='cogLayer' control={<Radio />} label='Cloud Optimized GeoTiff' />
             <FormControlLabel value='vectorXyzTileLayer' control={<Radio />} label='Vector XYZ Tile' />
+            <FormControlLabel value='vectorPmtilesLayer' control={<Radio />} label='Vector Pmtiles' />
           </RadioGroup>
         </Box>
 

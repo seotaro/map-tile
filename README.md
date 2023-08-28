@@ -47,3 +47,16 @@ tippecanoe --force --output-to-directory dest \
   --no-tile-compression \
   src.geojson
 ```
+
+## GeoJSON -> PMTiles（ベクター）
+
+```bash
+tippecanoe --force --output temp.mbtiles \
+  --layer xxx \
+  --minimum-zoom=0 --maximum-zoom=4 \
+  --no-tile-compression \
+  src.geojson
+./pmtiles convert temp.mbtiles dest.pmtiles
+```
+
+※ [felt/tippecanoe](https://github.com/felt/tippecanoe) で PMTiles が直接出力できるが、'Wrong magic number for PMTiles archive' のエラーになる。
