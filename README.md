@@ -2,15 +2,16 @@
 
 下記マップタイルの生成とレンダリングのメモ。
 
-- XYZ Tile
+- XYZ Tile（ラスター）
 - PMTiles（ラスター）
 - Cloud Optimized GeoTiff（以下、COG）
+- XYZ Tile（ベクター）
 
 [ライブデモ](https://seotaro.github.io/map-tile/)
 
 MapLibre GL JS（v3.3.0）を使ったレンダリングデモ。
 
-## GeoTiff -> XYZ Tile
+## GeoTiff -> XYZ Tile（ラスター）
 
 ```bash
 gdal2tiles.py --zoom=1-5 --xyz src.tiff dest
@@ -35,4 +36,14 @@ gdal_translate src.tiff -projwin -180.0000000 85.0 180.0000000 -85.0 \
   -of COG dest.tiff \
   -co TILING_SCHEME=GoogleMapsCompatible \
   -co COMPRESS=DEFLATE
+```
+
+## GeoJSON -> XYZ tile（ベクター）
+
+```bash
+tippecanoe --force --output-to-directory dest \
+  --layer xxx \
+  --minimum-zoom=0 --maximum-zoom=4 \
+  --no-tile-compression \
+  src.geojson
 ```

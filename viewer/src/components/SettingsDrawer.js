@@ -12,8 +12,9 @@ import Typography from '@mui/material/Typography';
 const SettingsDrawer = (props) => {
   const { open, handleClose,
     onChangePmtilesLayer,
-    onChagneXyzTileLayer,
+    onChagneRasterXyzTileLayer,
     onChagneCogLayer,
+    onChagneVectorXyzTileLayer,
   } = props;
 
   const [type, setType] = useState('pmtilesLayer');
@@ -22,8 +23,9 @@ const SettingsDrawer = (props) => {
     const type = event.target.value;
     setType(type);
     onChangePmtilesLayer(type === 'pmtilesLayer');
-    onChagneXyzTileLayer(type === 'xyzTileLayer');
+    onChagneRasterXyzTileLayer(type === 'rasterXyzTileLayer');
     onChagneCogLayer(type === 'cogLayer');
+    onChagneVectorXyzTileLayer(type === 'vectorXyzTileLayer');
   };
 
   return (
@@ -41,8 +43,9 @@ const SettingsDrawer = (props) => {
             onChange={_onChange}
           >
             <FormControlLabel value='pmtilesLayer' control={<Radio />} label='PMTiles' />
-            <FormControlLabel value='xyzTileLayer' control={<Radio />} label='XYZ Tile' />
+            <FormControlLabel value='rasterXyzTileLayer' control={<Radio />} label='Raster XYZ Tile' />
             <FormControlLabel value='cogLayer' control={<Radio />} label='Cloud Optimized GeoTiff' />
+            <FormControlLabel value='vectorXyzTileLayer' control={<Radio />} label='Vector XYZ Tile' />
           </RadioGroup>
         </Box>
 

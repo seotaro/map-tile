@@ -7,17 +7,21 @@ import SettingsDrawer from './components/SettingsDrawer.js';
 function App() {
   const [drawerOpen, setDrawerOpen] = useState(true);
   const [isShowPmtilesLayer, showPmtilesLayer] = useState(true);
-  const [isShowXyzTileLayer, showXyzTileLayer] = useState(false);
+  const [isShowRasterXyzTileLayer, showRasterXyzTileLayer] = useState(false);
   const [isShowCogLayer, showCogLayer] = useState(false);
+  const [isShowVectorXyzTileLayer, showVectorXyzTileLayer] = useState(false);
 
   const onChangePmtilesLayer = (isShow) => {
     showPmtilesLayer(isShow);
   }
-  const onChagneXyzTileLayer = (isShow) => {
-    showXyzTileLayer(isShow);
+  const onChagneRasterXyzTileLayer = (isShow) => {
+    showRasterXyzTileLayer(isShow);
   }
   const onChagneCogLayer = (isShow) => {
     showCogLayer(isShow);
+  }
+  const onChagneVectorXyzTileLayer = (isShow) => {
+    showVectorXyzTileLayer(isShow);
   }
 
   const handleDrawerOpen = () => {
@@ -31,16 +35,18 @@ function App() {
     <Box>
       <Map
         isShowPmtilesLayer={isShowPmtilesLayer}
-        isShowXyzTileLayer={isShowXyzTileLayer}
+        isShowRasterXyzTileLayer={isShowRasterXyzTileLayer}
         isShowCogLayer={isShowCogLayer}
+        isShowVectorXyzTileLayer={isShowVectorXyzTileLayer}
       />
 
       <SettingsDrawer
         open={drawerOpen}
         handleClose={handleDrawerClose}
         onChangePmtilesLayer={onChangePmtilesLayer}
-        onChagneXyzTileLayer={onChagneXyzTileLayer}
+        onChagneRasterXyzTileLayer={onChagneRasterXyzTileLayer}
         onChagneCogLayer={onChagneCogLayer}
+        onChagneVectorXyzTileLayer={onChagneVectorXyzTileLayer}
       />
     </Box >
   );

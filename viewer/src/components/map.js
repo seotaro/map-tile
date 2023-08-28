@@ -9,15 +9,17 @@ import './map.css';
 const protocol = new pmtiles.Protocol();
 maplibregl.addProtocol('pmtiles', protocol.tile);
 
-const REACT_APP_XYZ_TILE_URL = process.env.REACT_APP_XYZ_TILE_URL;
+const REACT_APP_RASTER_XYZ_TILE_URL = process.env.REACT_APP_RASTER_XYZ_TILE_URL;
 const REACT_APP_COG_URL = process.env.REACT_APP_COG_URL;
 const REACT_APP_PMTILE_URL = process.env.REACT_APP_PMTILE_URL;
+const REACT_APP_VECTOR_XYZ_TILE_URL = process.env.REACT_APP_VECTOR_XYZ_TILE_URL;
 
 export default function Map(props) {
   const {
     isShowPmtilesLayer,
-    isShowXyzTileLayer,
+    isShowRasterXyzTileLayer,
     isShowCogLayer,
+    isShowVectorXyzTileLayer,
   } = props;
 
   const mapContainer = useRef(null);
@@ -32,13 +34,16 @@ export default function Map(props) {
     map.setLayoutProperty('pmtiles-layer',
       'visibility', isShowPmtilesLayer ? 'visible' : 'none');
 
-    map.setLayoutProperty('xyz-tile-layer',
-      'visibility', isShowXyzTileLayer ? 'visible' : 'none');
+    map.setLayoutProperty('raster-xyz-tile-layer',
+      'visibility', isShowRasterXyzTileLayer ? 'visible' : 'none');
 
     map.setLayoutProperty('cog-layer',
       'visibility', isShowCogLayer ? 'visible' : 'none');
 
-  }, [isShowPmtilesLayer, isShowXyzTileLayer, isShowCogLayer]);
+    map.setLayoutProperty('vector-xyz-tile-layer',
+      'visibility', isShowVectorXyzTileLayer ? 'visible' : 'none');
+
+  }, [isShowPmtilesLayer, isShowRasterXyzTileLayer, isShowCogLayer, isShowVectorXyzTileLayer]);
 
 
   useEffect(() => {
@@ -48,6 +53,8 @@ export default function Map(props) {
       center: [lng, lat],
       zoom: zoom,
       hash: true,
+      maxZoom: 4,
+      minZoom: 0
     });
 
     map.on('load', async () => {
@@ -74,14 +81,14 @@ export default function Map(props) {
         });
       }
 
-      // ラスタータイル
+      // ラスター XYZ タイル
       map.addLayer({
-        id: 'xyz-tile-layer',
+        id: 'raster-xyz-tile-layer',
         type: 'raster',
         source: {
           type: 'raster',
           tileSize: 256,
-          tiles: [REACT_APP_XYZ_TILE_URL],
+          tiles: [REACT_APP_RASTER_XYZ_TILE_URL],
           attribution: '<a href="https://www.naturalearthdata.com/" target="_blank">Made with Natural Earth.</a>',
         },
         layout: {
@@ -102,6 +109,28 @@ export default function Map(props) {
         minzoom: 0,
         maxzoom: 4,
       });
+
+      // ベクター XYZ タイル
+      map.addLayer({
+        id: 'vector-xyz-tile-layer',
+        source: {
+          type: 'vector',
+          tiles: [REACT_APP_VECTOR_XYZ_TILE_URL],
+          attribution: "<a href='https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html' target='_blank'>「国土数値情報（行政区域データ）」を加工して作成</a>",
+        },
+        'source-layer': 'admini_boundary',
+        type: 'fill',
+        paint: {
+          'fill-opacity': 0.5,
+          'fill-color': 'red',
+        },
+        layout: {
+          visibility: 'none',
+        },
+        minzoom: 0,
+        maxzoom: 4,
+      });
+
 
       setMap(map);
     });
