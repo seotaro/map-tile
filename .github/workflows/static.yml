@@ -41,7 +41,14 @@ jobs:
         run: yarn
         working-directory: ./viewer
       - name: Build react app
-        run: GENERATE_SOURCEMAP=false REACT_APP_XYZ_TILE_URL=https://storage.googleapis.com/2023-08-25_map-tile/raster-tile/{z}/{x}/{y}.png REACT_APP_COG_URL=https://storage.googleapis.com/2023-08-25_map-tile/cloud-optimized-geotiff.tiff REACT_APP_PMTILE_URL=https://storage.googleapis.com/2023-08-25_map-tile/pmtiles.pmtiles REACT_APP_ROUTE_BASENAME='map-tile' yarn react-scripts build
+        run: >
+          GENERATE_SOURCEMAP=false
+          REACT_APP_XYZ_TILE_URL=https://storage.googleapis.com/2023-08-25_map-tile/raster-tile/{z}/{x}/{y}.png
+          REACT_APP_COG_URL=https://storage.googleapis.com/2023-08-25_map-tile/cloud-optimized-geotiff.tiff
+          REACT_APP_PMTILE_URL=https://storage.googleapis.com/2023-08-25_map-tile/pmtiles.pmtiles
+          REACT_APP_VECTOR_XYZ_TILE_URL=https://storage.googleapis.com/2023-08-25_map-tile/vector-tile/{z}/{x}/{y}.pbf
+          REACT_APP_ROUTE_BASENAME='map-tile'
+          yarn react-scripts build
         working-directory: ./viewer
         env:
           CI: false

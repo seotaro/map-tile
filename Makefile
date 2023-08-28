@@ -1,7 +1,7 @@
 BUCKET := 2023-08-25_map-tile
 SRC := HYP_50M_SR_W/HYP_50M_SR_W.tif
 
-create-xyz-tile:
+create-raster-xyz-tile:
 	mkdir -p output
 	gdal2tiles.py --zoom=0-4 --xyz --webviewer=none $(SRC) output/raster-tile
 
@@ -18,6 +18,14 @@ create-cloud-optimized-geotiff:
 		-of COG output/cloud-optimized-geotiff.tiff \
 		-co TILING_SCHEME=GoogleMapsCompatible \
 		-co COMPRESS=DEFLATE
+
+create-vector-xyz-tile:
+	# tippecanoe input only geojson
+	tippecanoe --force --output-to-directory output/vector-tile \
+		--layer admini_boundary \
+		--minimum-zoom=0 --maximum-zoom=4 \
+		--no-tile-compression \
+		N03-20230101_GML/N03-23_230101.geojson
 
 upload:
 	gsutil -m -h "Cache-Control:public, max-age=15, no-store" cp -r output/* gs://$(BUCKET)
