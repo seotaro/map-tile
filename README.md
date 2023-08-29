@@ -59,4 +59,4 @@ tippecanoe --force --output temp.mbtiles \
 ./pmtiles convert temp.mbtiles dest.pmtiles
 ```
 
-※ [felt/tippecanoe](https://github.com/felt/tippecanoe) で PMTiles が直接出力できるが、'Wrong magic number for PMTiles archive' のエラーになる。
+※ [felt/tippecanoe](https://github.com/felt/tippecanoe) で PMTiles が直接出力できるが、MapLibre pmtiles モジュールで読み込んだときに 'Wrong magic number for PMTiles archive' のエラーになる。
