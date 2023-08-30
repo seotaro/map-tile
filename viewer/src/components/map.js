@@ -54,7 +54,7 @@ export default function Map(props) {
   useEffect(() => {
     const map = new maplibregl.Map({
       container: mapContainer.current,
-      style: 'gsi-pale-mod.json',
+      style: 'std.json',
       center: [lng, lat],
       zoom: zoom,
       hash: true,
