@@ -7,7 +7,7 @@
 - Cloud Optimized GeoTiff（以下、COG）
 - XYZ Tile（ベクター）
 
-[ライブデモ](https://seotaro.github.io/map-tile/)
+[ライブデモ](https://seotaro.github.io/map-tile-experiment/)
 
 MapLibre GL JS（v3.3.0）を使ったレンダリングデモ。
 
