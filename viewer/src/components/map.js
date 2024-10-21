@@ -194,12 +194,12 @@ const generateCogSource = async (url) => {
   const tiff = await fromUrl(url);
   const pool = new Pool();
 
-  maplibregl.addProtocol('cog', (params, callback) => {
+  maplibregl.addProtocol('cog', async (params, abortController) => {
     const segments = params.url.split('/');
     const [z, x, y] = segments.slice(segments.length - 3).map(x => Number(x));
     const bbox = tile2mercatorBox(x, y, z);
 
-    tiff.readRasters({
+    return tiff.readRasters({
       bbox,
       samples: [0, 1, 2, 3], // RGBA
       width: SIZE, height: SIZE,
@@ -207,13 +207,11 @@ const generateCogSource = async (url) => {
       pool,
     })
       .then((data) => {
-        callback(null, encode(new ImageData(new Uint8ClampedArray(data), SIZE, SIZE,)), null, null);
+        return { data: encode(new ImageData(new Uint8ClampedArray(data), SIZE, SIZE,)) }
       })
       .catch((err) => {
         console.error(err);
       })
-
-    return { cancel: () => { } };
   });
 
   return {
